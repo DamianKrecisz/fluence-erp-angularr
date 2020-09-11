@@ -1,0 +1,18 @@
+<div *ngIf="product">
+  <label>name</label>
+  <input nz-input type="text" [(ngModel)]="product.name" (ngModelChange)="emitProduct()">
+
+  <label>category</label>
+  <input nz-input type="text" [(ngModel)]="product.category" (ngModelChange)="emitProduct()">
+
+  <label>price</label>
+  <input nz-input type="number" [(ngModel)]="product.price" (ngModelChange)="emitProduct()">
+
+  <label>available</label>
+  <div>
+    <nz-radio-group [(ngModel)]="product.available" (ngModelChange)="emitProduct()">
+      <label nz-radio [nzValue]="true">Available</label>
+      <label nz-radio [nzValue]="false">Not currently available</label>
+    </nz-radio-group>
+  </div>
+</div>

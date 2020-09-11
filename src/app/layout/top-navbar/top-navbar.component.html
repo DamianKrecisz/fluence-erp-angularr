@@ -1,0 +1,10 @@
+<div class="top-navbar">
+  <h1 [routerLink]="['/']" class="app-name">Fluence<span>ERP</span></h1>
+  <div class="user-info">
+    <div>
+      <span class="user-mail"> {{ currentUserMail }}</span>
+      <nz-avatar nzSize="small" nzIcon="user"></nz-avatar>
+    </div>
+    <div (click)="logOut()" class="logout-btn"><i nz-icon nzType="logout" nzTheme="outline"></i></div>
+  </div>
+</div>

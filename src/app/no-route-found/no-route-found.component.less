@@ -1,0 +1,40 @@
+@import '../../shared/variables.less';
+
+.top-color-bar {
+  transform-origin: bottom left;
+  background: @dark-blue;
+  height: 40vh;
+  position: fixed;
+  top: -48vh;
+  left: 0;
+  width: 120vw;
+  transform: rotate(12deg);
+  z-index: -1;
+}
+
+.right-color-bar {
+  background: #F3941B;
+  height: 100vh;
+  position: absolute;
+  top: 100%;
+  left: 71vw;
+  width: 60vw;
+}
+
+.no-route-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  font-size: 28px;
+}
+
+.no-route-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.btn-blue {
+  font-size: 18px;
+  padding: 10px 10px;
+}

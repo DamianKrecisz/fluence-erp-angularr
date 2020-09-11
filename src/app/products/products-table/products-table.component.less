@@ -1,0 +1,38 @@
+@import '../../../shared/variables.less';
+
+.products-table {
+  width: 100%;
+  font-size: 1rem;
+  background: white;
+
+  th {
+    border-bottom: 1px solid rgb(221, 221, 221);
+  }
+
+  th, td {
+    padding: 1rem;
+    box-sizing: border-box;
+  }
+
+  &__head {
+    font-weight: 700;
+    text-align: left;
+  }
+
+  &__action {
+    transition: 0.2s all;
+
+    &:hover {
+      background: @orange;
+      color: white;
+    }
+  }
+}
+
+.product-action {
+  cursor: pointer;
+
+  &:hover {
+    color: @orange;
+  }
+}

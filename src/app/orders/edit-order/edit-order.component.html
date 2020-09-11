@@ -1,0 +1,8 @@
+<h2>Edit order</h2>
+<nz-spin [nzSpinning]="!order">
+  <h3 *ngIf="order && order._id">{{ order._id }}</h3>
+  <div class="edit-order-wrapper">
+    <app-order-form [order]="order" (modelChange)="updateModel($event)"></app-order-form>
+  </div>
+  <button class="btn-blue" (click)="save()">Save changes</button>
+</nz-spin>

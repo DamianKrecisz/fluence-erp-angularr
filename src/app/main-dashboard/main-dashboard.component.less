@@ -1,0 +1,78 @@
+@import '../../shared/variables.less';
+
+.dashboard-outlet {
+  width: 100%;
+}
+
+.dashboard {
+  width: 100%;
+
+  h3 {
+    font-weight: 700;
+    margin-top: 0;
+  }
+}
+
+.modules-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.module-tab {
+  box-shadow: -5px 4px 15px rgba(161, 161, 161, 0.2);
+  border-radius: 5px;
+  width: 30%;
+  padding: 40px;
+  font-size: 20px;
+  text-align: center;
+  box-sizing: border-box;
+  cursor: pointer;
+  background: white;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  transition: 0.2s all;
+  outline: none;
+
+  &::before {
+    content: '';
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background: @orange;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: 0.35s all;
+  }
+
+  &:hover::before {
+    top: 10px;
+    left: 15px;
+  }
+
+  &:hover {
+    box-shadow: -5px 4px 30px rgba(161, 161, 161, 0.2);
+    transform: scale(1.005);
+  }
+}
+
+.module-info {
+  font-size: 12px;
+  font-weight: 300;
+  margin-bottom: 0;
+}
+
+.orders-chart {
+  margin-top: 20px;
+}
+
+.chart-container {
+  width: 50%;
+  margin-top: 20px;
+}
+
+.charts-container {
+  display: flex;
+}

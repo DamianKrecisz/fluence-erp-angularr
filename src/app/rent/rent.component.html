@@ -1,0 +1,104 @@
+
+<div class="dashboard">
+    <div class="search-create">
+      <input nz-input placeholder="Search rent ..."  (ngModelChange)="search($event)" />
+      <button nz-button nzType="primary" nzBlock (click)="showModal()"> New rent<i nz-icon nzType="plus-square"
+          nzTheme="outline"></i></button>
+    </div>
+    <!--[nzData]="rents$ | async"-->
+    <nz-table #rentTable nzBordered [nzData]="listOfData"  nzTableLayout="fixed">
+      <thead>
+        <tr>
+          <th nzWidth="1%">#</th>
+          <th nzWidth="15%">Client</th>
+          <th nzWidth="45%">Items</th>
+          <th nzWidth="15%">DateStart</th>
+          <th nzWidth="15%">DateEnd</th>
+          <th nzWidth="1%">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+  
+      <tr *ngFor="let rent of rentTable.data ; let i = index">
+        <td>{{ i+1 }}</td>
+
+        <td>{{ rent.client }}</td>
+        <td>
+          <div *ngFor="let t of rent.items">
+            {{t }}
+          </div>
+        
+        </td>
+  
+        <td>{{ rent.dateStart | date}}</td>
+        <td>{{ rent.dateEnd | date}}</td>
+        <td>
+          <button (click)="deleteRent(rent)">
+            <i nz-icon nzType="delete" nzTheme="outline"></i>
+            
+          </button>
+        </td>
+      </tr>
+    </tbody>
+    </nz-table>
+  </div>
+  
+  <nz-modal [(nzVisible)]="isVisible" nzTitle="Create New Rent" (nzOnCancel)="handleCancel()" (nzOnOk)="submitForm()"
+    [nzOkLoading]="isOkLoading">
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+  
+      <nz-form-item>
+        <nz-form-label [nzXs]="24" [nzSm]="4" nzFor="client">Client</nz-form-label>
+        <nz-form-control [nzXs]="24" [nzSm]="20" nzErrorTip="Please select client!">
+          <nz-select id="client" formControlName="client" nzPlaceHolder="Please select client">
+            <nz-option *ngFor="let client of clients$ | async " nzValue="{{client.name}}" nzLabel="{{client.name}}">
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    
+      <nz-form-item *ngFor="let control of listOfControl; let i = index">
+        <nz-form-label [nzXs]="24" [nzSm]="4" *ngIf="i == 0" [nzFor]="control.controlInstance">Items: 
+        </nz-form-label>
+        <nz-form-control [nzXs]="24" [nzSm]="20" [nzOffset]="i == 0 ? 0 : 4"
+          nzErrorTip="Please select item to rent.">
+          
+    
+            <nz-select nzPlaceHolder="Select a option and change input text above" class="passenger-input"  [formControlName]="control.itemToRent" [attr.id]="control.id">
+              <nz-option *ngFor="let product of products$ | async;" nzValue="{{product.name}}" nzLabel="{{product.name}}" ></nz-option>
+            </nz-select>
+    
+    
+          <i nz-icon nzType="minus-circle-o" class="dynamic-delete-button" (click)="removeField(control, $event)"></i>
+        </nz-form-control>
+      </nz-form-item>
+      
+      <nz-form-item>
+        <nz-form-control [nzXs]="{ span: 24, offset: 0 }" [nzSm]="{ span: 20, offset: 4 }">
+          <button nz-button nzType="dashed" class="add-field" (click)="addField($event)">
+            <i nz-icon nzType="plus"></i>
+            Add field
+          </button>
+        </nz-form-control>
+      </nz-form-item>
+      
+      <nz-form-item>
+        <nz-form-label [nzXs]="24" [nzSm]="4" nzFor="dateStart">From:</nz-form-label>
+        <nz-form-control [nzXs]="24" [nzSm]="20" nzErrorTip="Please select date start!">
+          <nz-date-picker id="dateStart" [(ngModel)]="dateStart"   formControlName="dateStart" ></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    
+      <nz-form-item>
+        <nz-form-label [nzXs]="24" [nzSm]="4" nzFor="dateEnd">To:</nz-form-label>
+        <nz-form-control [nzXs]="24" [nzSm]="20" nzErrorTip="Please select date end!">
+          <nz-date-picker id="dateEnd" [(ngModel)]="dateEnd"   formControlName="dateEnd" ></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    
+    
+    
+    
+    </form>
+    </nz-modal>
+  

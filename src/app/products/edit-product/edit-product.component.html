@@ -1,0 +1,8 @@
+<h2>Edit product</h2>
+<nz-spin [nzSpinning]="!product">
+  <h3 *ngIf="product && product._id">{{ product._id }}</h3>
+  <div class="edit-product-wrapper">
+    <app-product-form [product]="product" (modelChange)="updateModel($event)"></app-product-form>
+  </div>
+  <button class="btn-blue" (click)="save()">Save changes</button>
+</nz-spin>

@@ -1,0 +1,33 @@
+<nz-spin [nzSpinning]="!(orders$ | async)">
+  <nz-table class="orders-table" #ordersTable [nzData]="orders$ | async" [nzPageSize]="5">
+    <thead>
+      <tr class="orders-table__head">
+        <th style="width: 50px;"></th>
+        <th style="width: 50px;"></th>
+        <th>Name</th>
+        <th>Subject</th>
+        <th>Status</th>
+        <th>Creation Date</th>
+        <th>Author</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of ordersTable.data" class="order-row" [routerLink]="['/orders/view', order._id]">
+        <td style="width: 50px;">
+          <span class="order-action" nz-popconfirm nzPopconfirmTitle="Are you sure delete this order?"
+          nzPopconfirmPlacement="topLeft" (click)="handleDelete($event)" (nzOnConfirm)="deleteOrder(order)"><i nz-icon nzType="delete" nzTheme="outline"></i></span>
+        </td>
+        <td style="width: 50px;">
+          <span class="order-action" [routerLink]="['/orders/edit', order._id]"><i nz-icon nzType="edit" nzTheme="outline"></i></span>
+        </td>
+        <td>{{ order.name}}</td>
+        <td>{{ order.subject}}</td>
+        <td>{{ order.status}}</td>
+        <td>{{ order.creationDate | date:'mediumDate' }}</td>
+        <td>{{ order.author}}</td>
+        <td>{{ order.value}}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-spin>

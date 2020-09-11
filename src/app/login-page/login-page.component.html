@@ -1,0 +1,24 @@
+<div class="top-color-bar">
+    <div class="right-color-bar"></div>
+</div>
+<div class="login-page-content">
+  <div class="app-title-bar">
+      <h1>FluenceERP</h1>
+      <h2>But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system</h2>
+  </div>
+  <div class="login-container">
+    <div *ngIf="loginMode; else signUpContainer">
+      <div class="input-wrapper">
+        <input #emailInput type="text" class="login-input" placeholder="Type your login name ...">
+      </div>
+      <div class="input-wrapper">
+        <input #passwordInput type="password" class="login-input" placeholder="Enter your password ...">
+      </div>
+      <button class="login-btn" (click)="logIn(emailInput.value, passwordInput.value)">Log in</button>
+      <span> not registered yet? <b style="color: #F3941B; cursor: pointer;" (click)="setToSignUpMode()">click</b></span>
+    </div>
+    <ng-template #signUpContainer>
+      <app-sign-up></app-sign-up>
+    </ng-template>
+  </div>
+</div>

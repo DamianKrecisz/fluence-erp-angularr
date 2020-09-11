@@ -1,0 +1,46 @@
+@import '../../../shared/variables.less';
+
+.top-navbar {
+  display: flex;
+  justify-content: space-between;
+  height: 100%;
+  align-items: center;
+}
+
+.user-info {
+  display: flex;
+  padding-right: 20px;
+}
+
+.logout-btn {
+  cursor: pointer;
+  margin-left: 10px;
+  color: white;
+  margin-top: 3px;
+  font-size: 12px;
+
+  &:hover {
+    color: @orange;
+  }
+}
+
+.user-mail {
+  color: white;
+  font-weight: 200;
+  text-transform: uppercase;
+  font-size: 10px;
+  margin-right: 10px;
+}
+
+.app-name {
+  margin: 0 0 0 15px;
+  font-size: 18px;
+  font-weight: 700;
+  color: @dark-blue;
+  outline: none;
+  cursor: pointer;
+
+  span {
+    color: @orange;
+  }
+}

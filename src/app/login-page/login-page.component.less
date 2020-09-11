@@ -1,0 +1,103 @@
+@import '../../shared/variables';
+
+.top-color-bar {
+    transform-origin: bottom left;
+    background: @dark-blue;
+    height: 40vh;
+    position: fixed;
+    top: -48vh;
+    left: 0;
+    width: 120vw;
+    transform: rotate(12deg);
+}
+
+.right-color-bar {
+    background: #F3941B;
+    height: 100vh;
+    position: absolute;
+    top: 100%;
+    left: 71vw;
+    width: 60vw;
+}
+
+.login-page-content {
+    width: 45vw;
+    padding-top: 17vh;
+    padding-left: 12vw;
+}
+
+.app-title-bar {
+    font-family: 'Playfair Display', serif;
+}
+
+.app-title-bar h2 {
+    font-size: 1rem;
+    font-weight: 300;
+    width: 75%;
+    margin-top: 1.5rem;
+}
+
+.app-title-bar h1 {
+  margin-bottom: 0;
+  font-size: 5rem;
+  font-weight: 700;
+}
+
+.login-input {
+  border: 1px solid @dark-blue;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem 1rem;
+  width: 60%;
+
+  &::placeholder {
+      color: @placeholder-text;
+  }
+}
+
+.login-container {
+    margin-top: 2rem;
+}
+
+.login-btn {
+  border: none;
+  padding: 0.5rem 1rem;
+  color: #fff;
+  background: #022437;
+  border-radius: 0.5rem;
+  margin-top: 0.5rem;
+  transition: 0.5s all;
+  outline: none;
+  cursor: pointer;
+
+  &:hover {
+      background: @orange;
+  }
+}
+
+@media only screen and (max-width: 1100px) {
+    .top-color-bar {
+        height: 45vh;
+        top: -45vh;
+        transform: rotate(10deg);
+    }
+}
+
+@media only screen and (max-width: 768px) {
+  .app-title-bar {
+      position: absolute;
+  }
+  .app-title-bar h1 {
+      font-size: 1.2rem;
+  }
+  .app-title-bar h2 {
+      margin-top: 2vmax;
+      font-size: 1rem;
+  }
+  .top-color-bar {
+      transform: rotate(15deg);
+      height: 68vmax;
+      top: -43vmax;
+      left: -15vw;
+      width: 130vw;
+  }
+}

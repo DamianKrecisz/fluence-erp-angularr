@@ -1,0 +1,84 @@
+@import '../../shared/variables.less';
+
+.main-layout {
+  display: flex;
+  height: 95vh;
+}
+
+.side-navbar {
+  width: 8vw;
+  box-sizing: border-box;
+}
+
+.app-content {
+  box-sizing: border-box;
+  box-shadow: -5px 4px 15px #4a4a4a4a;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.97);
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+
+  &::after, &::before {
+    transform-origin: bottom left;
+    height: 40vh;
+    width: 120vw;
+    content: '';
+    position: absolute;
+  }
+
+  &::after {
+    background: #022437;
+    top: 559px;
+    left: -275px;
+    transform: rotate(12deg);
+    z-index: 200;
+  }
+
+  &::before {
+    background: #F3941B;
+    top: 523px;
+    left: -275px;
+    transform: rotate(18deg);
+    z-index: 100;
+  }
+}
+
+.app-content-wrapper {
+  width: 92vw;
+  padding: 10px 20px 20px 10px;
+}
+
+.top-navbar-wrapper {
+  height: 5vh;
+}
+
+.top-color-bar {
+  transform-origin: bottom left;
+  background: @dark-blue;
+  height: 40vh;
+  position: fixed;
+  top: -48vh;
+  left: 0;
+  width: 120vw;
+  transform: rotate(12deg);
+  z-index: -1;
+}
+
+.right-color-bar {
+  background: #F3941B;
+  height: 100vh;
+  position: absolute;
+  top: 100%;
+  left: 71vw;
+  width: 60vw;
+}
+
+.content-scrollable {
+  overflow: auto;
+  height: 100%;
+  width: 100%;
+  padding: 10px;
+}

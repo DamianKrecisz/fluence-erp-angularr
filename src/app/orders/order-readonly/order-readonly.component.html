@@ -1,0 +1,29 @@
+<h2>Order preview</h2>
+<nz-spin [nzSpinning]="!order">
+  <h3 *ngIf="order && order._id">{{ order._id }}</h3>
+  <div *ngIf="order">
+    <label>Product Id</label>
+    <div class="order-info">{{ order.productId }}</div>
+
+    <label>Name</label>
+    <div class="order-info">{{ order.name }}</div>
+
+    <label>Subject</label>
+    <div class="order-info">{{ order.subject }}</div>
+
+    <label>Status</label>
+    <div class="order-info">{{ order.status }}</div>
+
+    <label>Creation Date</label>
+    <div class="order-info">{{ order.creationDate | date:'mediumDate' }}</div>
+
+    <label>Author</label>
+    <div class="order-info">{{ order.author }}</div>
+
+    <label>Value</label>
+    <div class="order-info">{{ order.value }}</div>
+
+    <label>Comment</label>
+    <div class="order-info">{{ order.comment }}</div>
+  </div>
+</nz-spin>

@@ -1,0 +1,10 @@
+<div class="input-wrapper">
+  <input #emailInput type="text" class="login-input" placeholder="Enter your e-mail ...">
+</div>
+<div class="input-wrapper">
+  <input #passwordInput type="password" class="login-input" placeholder="Enter your password ...">
+</div>
+<div class="input-wrapper">
+  <input type="password" class="login-input" placeholder="Confirm your password ...">
+</div>
+<button class="signup-btn" (click)="signUp(emailInput.value, passwordInput.value)">Sign in</button>

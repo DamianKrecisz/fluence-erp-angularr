@@ -1,0 +1,51 @@
+<div *ngIf="order">
+  <label>Choose product</label>
+
+  <div>
+    <nz-select [(ngModel)]="order.productId" nzShowSearch nzPlaceHolder="Choose product" class="product-select">
+      <nz-option *ngFor="let product of products$ | async" [nzValue]="product._id" [nzLabel]="product.name" nzCustomContent>
+        <div class="product-option-content">
+          <span>{{ product.name }}</span>
+          <span nz-popover nzType="primary" [nzPopoverTitle]="product.name" [nzPopoverContent]="productDetails">
+            <i class="info-icon" nz-icon nzType="info-circle" nzTheme="outline"></i>
+          </span>
+        </div>
+        <ng-template #productDetails>
+          <label class="product-detail-label">name:</label>
+          <div class="product-detail">{{ product.name }}</div>
+
+          <label class="product-detail-label">category:</label>
+          <div class="product-detail">{{ product.category }}</div>
+
+          <label class="product-detail-label">price:</label>
+          <div class="product-detail">{{ product.price }}</div>
+
+          <label class="product-detail-label">available:</label>
+          <div class="product-detail">{{ product.price }}</div>
+        </ng-template>
+      </nz-option>
+    </nz-select>
+  </div>
+
+  <label>name</label>
+  <input nz-input type="text" [(ngModel)]="order.name" (ngModelChange)="emitOrder()">
+
+  <label>subject</label>
+  <input nz-input type="text" [(ngModel)]="order.subject" (ngModelChange)="emitOrder()">
+
+  <label>status</label>
+  <nz-select [(ngModel)]="order.status" (ngModelChange)="emitOrder()">
+    <nz-option nzValue="in progress" nzLabel="In Progress"></nz-option>
+    <nz-option nzValue="completed" nzLabel="Completed"></nz-option>
+    <nz-option nzValue="canceled" nzLabel="Canceled" nzDisabled></nz-option>
+  </nz-select>
+
+  <label>author</label>
+  <input nz-input disabled type="text" [(ngModel)]="order.author" (ngModelChange)="emitOrder()">
+
+  <label>value</label>
+  <input nz-input type="number" [(ngModel)]="order.value" (ngModelChange)="emitOrder()">
+
+  <label>comment</label>
+  <textarea nz-input [(ngModel)]="order.comment" (ngModelChange)="emitOrder()"></textarea>
+</div>

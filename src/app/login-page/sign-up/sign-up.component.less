@@ -1,0 +1,28 @@
+@import '../../../shared/variables.less';
+
+.login-input {
+  border: 1px solid @dark-blue;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem 1rem;
+  width: 60%;
+
+  &::placeholder {
+      color: @placeholder-text;
+  }
+}
+
+.signup-btn {
+  border: none;
+  padding: 0.5rem 1rem;
+  color: #fff;
+  background: #022437;
+  border-radius: 0.5rem;
+  margin-top: 0.5rem;
+  transition: 0.5s all;
+  outline: none;
+  cursor: pointer;
+
+  &:hover {
+      background: @orange;
+  }
+}

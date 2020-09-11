@@ -1,0 +1,43 @@
+<h2>Add new client</h2>
+<div class="add-product-wrapper">
+  <div *ngIf="client">
+    <label>Client Name</label>
+    <input nz-input type="text" [(ngModel)]="client.name" placeholder="Please input client name...">
+
+    <label>Address</label>
+    <input nz-input type="text" [(ngModel)]="client.address" placeholder="Please input address...">
+
+    <label>Tax Number</label>
+    <input nz-input type="number" maxlength = "9" [(ngModel)]="client.tax" placeholder="Please input tax number...">
+
+  </div>
+</div>
+<button class="btn-blue" (click)="addNewClient()">Add +</button>
+<div style="margin-top: 20px;">
+  <nz-table class="recent-actions-table" #clientsTable [nzData]="clients$ | async" [nzPageSize]="5">
+    <thead>
+      <tr class="recent-actions-table__head">
+        <th>Name</th>
+        <th>Address</th>
+        <th>Tax</th>
+        <th >Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let client of clientsTable.data">
+        <td>{{ client.name }}</td>
+        <td>{{ client.address }}</td>
+        <td>{{ client.tax }}</td>
+        <td style="width: 100px;">
+          <i nz-icon nzType="edit" nzTheme="outline" (click)="test(client)"></i>
+          <i nz-icon nzType="delete" nzTheme="outline" style="margin-left:25px;" (click)="deleteClient(client)"></i>
+          <!-- <span class="product-action" nz-popconfirm nzPopconfirmTitle="Are you sure delete this product?"
+          nzPopconfirmPlacement="topLeft" (nzOnConfirm)="deleteproduct(product)"><i nz-icon nzType="delete" nzTheme="outline"></i></span> -->
+          
+          <!-- <span class="product-action" (click)="openEditproductModal(product)"><i nz-icon nzType="edit" nzTheme="outline"></i></span> -->
+          
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>

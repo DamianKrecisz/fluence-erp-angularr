@@ -1,0 +1,22 @@
+<h2>Add new product</h2>
+<div class="add-product-wrapper">
+  <div *ngIf="product">
+    <label>name</label>
+    <input nz-input type="text" [(ngModel)]="product.name">
+
+    <label>category</label>
+    <input nz-input type="text" [(ngModel)]="product.category">
+
+    <label>price</label>
+    <input nz-input type="number" [(ngModel)]="product.price">
+
+    <label>available</label>
+    <div>
+      <nz-radio-group [(ngModel)]="product.available">
+        <label nz-radio [nzValue]="true">Available</label>
+        <label nz-radio [nzValue]="false">Not currently available</label>
+      </nz-radio-group>
+    </div>
+  </div>
+</div>
+<button class="btn-blue" (click)="addNewProduct()">Add +</button>

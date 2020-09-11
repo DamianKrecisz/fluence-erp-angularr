@@ -1,0 +1,29 @@
+<div style="margin-top: 20px;">
+  <nz-table class="products-table" #productsTable [nzData]="products$ | async" [nzPageSize]="5">
+    <thead>
+      <tr class="products-table__head">
+        <th style="width: 50px;"></th>
+        <th style="width: 50px;"></th>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Price</th>
+        <th>Available</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of productsTable.data">
+        <td style="width: 50px;">
+          <span class="product-action" nz-popconfirm nzPopconfirmTitle="Are you sure delete this product?"
+          nzPopconfirmPlacement="topLeft" (nzOnConfirm)="deleteProduct(product)"><i nz-icon nzType="delete" nzTheme="outline"></i></span>
+        </td>
+        <td style="width: 50px;">
+          <span class="product-action" [routerLink]="['/products/edit', product._id]"><i nz-icon nzType="edit" nzTheme="outline"></i></span>
+        </td>
+        <td>{{ product.name }}</td>
+        <td>{{ product.category }}</td>
+        <td>{{ product.price }}</td>
+        <td>{{ product.available }}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>

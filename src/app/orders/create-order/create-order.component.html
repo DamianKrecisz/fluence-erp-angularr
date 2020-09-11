@@ -1,0 +1,8 @@
+<h2>Add new order</h2>
+<div class="create-order-wrapper">
+  <app-order-form [order]="order" (modelChange)="updateModel($event)"></app-order-form>
+</div>
+<button class="btn-blue" (click)="createNewOrder()">Create new order +</button>
+
+<div (click)="toggleDataView()" class="data-view-toggle" [style.background]="dataVisible ? 'green' : 'red'"></div>
+<pre *ngIf="dataVisible">{{ order | json }}</pre>
