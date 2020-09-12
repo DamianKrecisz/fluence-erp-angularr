@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
 
-  public fluenceServerURL = 'http://localhost:3000';
+  public fluenceServerURL = '';
   public currentUser: string;
 
   constructor(private http: HttpClient, private router: Router) { }

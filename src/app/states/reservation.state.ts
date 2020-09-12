@@ -18,7 +18,7 @@ export class ReservationStateModel {
 
 export class ReservationState {
 
-  public fluenceServerURL = 'http://localhost:3000';
+  public fluenceServerURL = '';
 
   constructor(private http: HttpClient) {}
 

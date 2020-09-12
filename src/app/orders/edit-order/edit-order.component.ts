@@ -27,7 +27,7 @@ export class EditOrderComponent implements OnInit {
   ngOnInit() {
     this.route.params.pipe(
       switchMap(({id}) => {
-        return this.http.get<Order>(`http://localhost:3000/orders/${id}`);
+        return this.http.get<Order>(`/orders/${id}`);
       })
     ).subscribe(
       (order: Order) => {

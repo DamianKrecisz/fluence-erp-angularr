@@ -18,7 +18,7 @@ export class OrderStateModel {
 
 export class OrderState {
 
-  public fluenceServerURL = 'http://localhost:3000';
+  public fluenceServerURL = '';
 
   constructor(private http: HttpClient) {}
 

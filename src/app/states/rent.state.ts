@@ -18,7 +18,7 @@ export class RentStateModel {
 
 export class RentState {
 
-    public fluenceServerURL = 'http://localhost:3000';
+    public fluenceServerURL = '';
 
     constructor(private http: HttpClient) {}
   
