@@ -10,7 +10,7 @@ const { Rent } = require('./database/models/rent.model');
 
 
 /* SERVER FRONT START */
-
+const app = express();
 app.use(express.static(__dirname + '/dist/fluence-erp'));
 app.get('/*', function (req, res) {
     res.sendFile(path.join(__dirname + '/dist/fluence-erp/index.html'));
@@ -23,8 +23,6 @@ app.listen(process.env.PORT || 8080);
 
 const { mongoose } = require('./database/mongoose');
 const jwt = require('jsonwebtoken');
-const app = express();
-const PORT = 3000;
 app.use(bodyParser.json());
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
