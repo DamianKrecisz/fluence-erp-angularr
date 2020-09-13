@@ -17,10 +17,29 @@ app.get('*', function (req, res) {
 });
 app.listen(process.env.PORT || 8080);
 
-
 /* SERVER FRONT END */
 
-const { mongoose } = require('./database/mongoose');
+/**       START       */
+
+
+const db = require("./database/mongoose");
+const dbName = "fluenceerp";
+const collectionName = "clients";
+
+db.initialize(dbName, collectionName, function(dbCollection) { // successCallback
+    // get all items
+    dbCollection.find().toArray(function(err, result) {
+        if (err) throw err;
+          console.log(result);
+    });
+
+    // << db CRUD routes >>
+
+}, function(err) { // failureCallback
+    throw (err);
+});
+
+/**       STOP        */
 const jwt = require('jsonwebtoken');
 app.use(bodyParser.json());
 app.use(function (req, res, next) {
@@ -252,6 +271,13 @@ app.get('/clients', authenticate, (req, res) => {
         res.send(e);
     });
 })
+app.get("/clients", (request, response) => {
+    // return updated list
+    dbCollection.find().toArray((error, result) => {
+        if (error) throw error;
+        response.json(result);
+    });
+});
 
 app.post('/clients', authenticate, (req, res) => {
     let newClient = new Client({
