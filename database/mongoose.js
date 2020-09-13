@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+/*const mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb+srv://Nespire:damianos12@cluster0.mmmzg.mongodb.net/fluenceerp?retryWrites=true&w=majority', { useNewUrlParser: true}).then(() => {
@@ -12,8 +12,8 @@ mongoose.set('useCreateIndex', true);
 mongoose.set('useFindAndModify', false);
 
 module.exports = { mongoose }
+*/
 
-/*
 const MongoClient = require('mongodb').MongoClient;
 const uri = "mongodb+srv://Nespire:<password>@cluster0.mmmzg.mongodb.net/<dbname>?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true });
@@ -22,4 +22,4 @@ client.connect(err => {
   // perform actions on the collection object
   client.close();
 });
-*/
+module.exports = { client }

@@ -20,7 +20,7 @@ app.listen(process.env.PORT || 8080);
 
 /* SERVER FRONT END */
 
-const { mongoose } = require('./database/mongoose');
+const { client } = require('./database/mongoose');
 const jwt = require('jsonwebtoken');
 app.use(bodyParser.json());
 app.use(function (req, res, next) {
