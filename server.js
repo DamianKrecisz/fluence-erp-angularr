@@ -12,7 +12,7 @@ const { Rent } = require('./database/models/rent.model');
 /* SERVER FRONT START */
 const app = express();
 app.use(express.static(__dirname + '/dist/fluence-erp'));
-app.get('/*', function (req, res) {
+app.get('*', function (req, res) {
     res.sendFile(path.join(__dirname + '/dist/fluence-erp/index.html'));
 });
 app.listen(process.env.PORT || 8080);
@@ -20,7 +20,7 @@ app.listen(process.env.PORT || 8080);
 
 /* SERVER FRONT END */
 
-const { client } = require('./database/mongoose');
+const { mongoose } = require('./database/mongoose');
 const jwt = require('jsonwebtoken');
 app.use(bodyParser.json());
 app.use(function (req, res, next) {
