@@ -27,7 +27,7 @@ app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Methods", "GET, POST, HEAD, OPTIONS, PUT, PATCH, DELETE");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, fluence-access-token, fluence-refresh-token, _id");
-    req.accepts('text/html')
+    res.header('Content-Type', 'text/html');
 
     res.header(
         'Access-Control-Expose-Headers',
