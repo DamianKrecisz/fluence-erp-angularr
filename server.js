@@ -20,7 +20,6 @@ app.listen(process.env.PORT || 8080);
 
 /* SERVER FRONT END */
 
-
 const { mongoose } = require('./database/mongoose');
 const jwt = require('jsonwebtoken');
 app.use(bodyParser.json());
@@ -28,6 +27,7 @@ app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Methods", "GET, POST, HEAD, OPTIONS, PUT, PATCH, DELETE");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, fluence-access-token, fluence-refresh-token, _id");
+    res.setHeader('Content-Type', 'application/json');
 
     res.header(
         'Access-Control-Expose-Headers',
@@ -246,9 +246,8 @@ app.delete('/products/:id', authenticate, (req, res) => {
 // CLIENTS:
 
 app.get('/clients', authenticate, (req, res) => {
-    // We want to return an array of all the lists that belong to the authenticated user 
     Client.find().then(clients => {
-        res.send(clients);
+       res.json(clients);
     }).catch(e => {
         res.send(e);
     });
