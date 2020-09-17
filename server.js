@@ -252,11 +252,18 @@ app.get('/products/:id', /*authenticate,*/(req, res) => {
     });
 });
 
-app.patch('/products/:id', /*authenticate,*/(req, res) => {
-    Product.findOneAndUpdate({ _id: req.params.id }, {
-        $set: req.body
-    }).then(() => {
-        res.send({ 'message': 'Updated successfully' });
+app.patch('/products/:id', /*authenticate,*/(request, response) => {
+    const itemId = request.params.id;
+    const item = request.body;
+    console.log("Editing item: ", itemId, " to be ", item);
+
+    collectionProducts.updateOne({ id: itemId }, { $set: item }, (error, result) => {
+        if (error) throw error;
+        // send back entire updated list, to make sure frontend data is up-to-date
+        collectionProducts.find().toArray(function(_error, _result) {
+            if (_error) throw _error;
+            response.json(_result);
+        });
     });
 });
 
