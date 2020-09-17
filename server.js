@@ -24,7 +24,7 @@ var database,
     collectionUsers,
     collectionOrders,
     collectionReservations,
-    collectionRents,
+    collectionRents
 
 app.listen(4200, () => {
     MongoClient.connect(CONNECTION_URL, { useNewUrlParser: true }, (error, client) => {
