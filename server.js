@@ -1,13 +1,13 @@
 const express = require("express");
 const BodyParser = require("body-parser");
-const MongoClient = require("mongodb").MongoClient;
-const ObjectId = require("mongodb").ObjectID;
 const { Order } = require('./database/models/order.model');
 const { User } = require('./database/models/user.model');
 const { Product } = require('./database/models/product.model');
 const { Client } = require('./database/models/client.model');
 const { Reservation } = require('./database/models/reservation.model');
 const { Rent } = require('./database/models/rent.model');
+const MongoClient = require("mongodb").MongoClient;
+const ObjectId = require("mongodb").ObjectID;
 
 const path = require('path');
 const CONNECTION_URL = "mongodb+srv://Nespire:damianos12@cluster0.mmmzg.mongodb.net/fluenceerp?retryWrites=true&w=majority";
@@ -194,11 +194,7 @@ app.get('/orders/:id', /*authenticate,*/(req, res) => {
 });
 
 app.patch('/orders/:id', /*authenticate,*/(req, res) => {
-    Order.findOneAndUpdate({ _id: req.params.id }, {
-        $set: req.body
-    }).then(() => {
-        res.send({ 'message': 'Updated successfully' });
-    });
+   
 });
 
 app.delete('/orders/:id', /*authenticate,*/(req, res) => {
