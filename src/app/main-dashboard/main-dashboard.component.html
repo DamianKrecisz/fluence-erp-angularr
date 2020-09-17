@@ -15,34 +15,41 @@
       </div>
     </div>
 
-    <div class="charts-container">
-      <div class="orders-chart">
-        <h4>Last orders per month:</h4>
-        <div *ngIf="barChartData && barChartLabels" class="chart-container">
-          <canvas baseChart
-                  [datasets]="barChartData"
-                  [labels]="barChartLabels"
-                  [options]="barChartOptions"
-                  [legend]="barChartLegend"
-                  [colors]="lineChartColors"
-                  [chartType]="barChartType">
-          </canvas>
+    <div class="charts-container" *ngIf="(orders$ | async) as orders">
+      <ng-container *ngIf="orders.length > 0; else noOrders">
+        <div class="orders-chart">
+          <h4>Last orders per month:</h4>
+          <div *ngIf="barChartData && barChartLabels" class="chart-container">
+            <canvas baseChart
+                    [datasets]="barChartData"
+                    [labels]="barChartLabels"
+                    [options]="barChartOptions"
+                    [legend]="barChartLegend"
+                    [colors]="lineChartColors"
+                    [chartType]="barChartType"
+                    width="400">
+            </canvas>
+          </div>
         </div>
-      </div>
 
-      <div class="orders-chart">
-        <h4>Orders statuses:</h4>
-        <div *ngIf="barChartData && barChartLabels" class="chart-container">
-          <canvas baseChart
-                  [datasets]="orderStatusesChartData"
-                  [labels]="orderStatusesLabels"
-                  [options]="barChartOptions"
-                  [legend]="barChartLegend"
-                  [colors]="statusesChartColors"
-                  [chartType]="barChartType">
-          </canvas>
+        <div class="orders-chart">
+          <h4>Orders statuses:</h4>
+          <div *ngIf="barChartData && barChartLabels" class="chart-container">
+            <canvas baseChart
+                    [datasets]="orderStatusesChartData"
+                    [labels]="orderStatusesLabels"
+                    [options]="barChartOptions"
+                    [legend]="barChartLegend"
+                    [colors]="statusesChartColors"
+                    [chartType]="barChartType"
+                    width="400">
+            </canvas>
+          </div>
         </div>
-      </div>
+      </ng-container>
+      <ng-template #noOrders>
+        <div class="no-orders-container">No orders</div>
+      </ng-template>
     </div>
   </div>
 </div>

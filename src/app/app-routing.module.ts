@@ -21,12 +21,12 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginPageComponent,
-    canActivate: [LoggedUserGuard],
+    //canActivate: [LoggedUserGuard],
     data: { title: 'Log in' }
   },
   {
     path: '',
-    canActivate: [AuthGuard],
+    //canActivate: [AuthGuard],
     component: LayoutComponent,
     data: { title: 'Fluence ERP - Home' },
     children: [

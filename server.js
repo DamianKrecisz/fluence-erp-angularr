@@ -1,6 +1,7 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const path = require('path');
+const express = require("express");
+const BodyParser = require("body-parser");
+const MongoClient = require("mongodb").MongoClient;
+const ObjectId = require("mongodb").ObjectID;
 const { Order } = require('./database/models/order.model');
 const { User } = require('./database/models/user.model');
 const { Product } = require('./database/models/product.model');
@@ -8,53 +9,49 @@ const { Client } = require('./database/models/client.model');
 const { Reservation } = require('./database/models/reservation.model');
 const { Rent } = require('./database/models/rent.model');
 
+const path = require('path');
+const CONNECTION_URL = "mongodb+srv://Nespire:damianos12@cluster0.mmmzg.mongodb.net/fluenceerp?retryWrites=true&w=majority";
+const DATABASE_NAME = "fluenceerp";
 
-/* SERVER FRONT START */
-const app = express();
-app.use(express.static(__dirname + '/dist/fluence-erp'));
-app.get('*', function (req, res) {
-    res.sendFile(path.join(__dirname + '/dist/fluence-erp/index.html'));
-});
-app.listen(process.env.PORT || 8080);
+var app = express();
 
-/* SERVER FRONT END */
+app.use(BodyParser.json());
+app.use(BodyParser.urlencoded({ extended: true }));
 
-/**       START       */
+var database,
+    collectionClients,
+    collectionProducts,
+    collectionUsers,
+    collectionOrders,
+    collectionReservations,
+    collectionRents,
+    collectionUsers;
 
+app.listen(4200, () => {
+    MongoClient.connect(CONNECTION_URL, { useNewUrlParser: true }, (error, client) => {
+        if (error) {
+            throw error;
+        }
+        database = client.db(DATABASE_NAME);
+        collectionClients = database.collection("clients");
+        collectionProducts = database.collection("products");
+        collectionUsers = database.collection("users");
+        collectionOrders = database.collection("orders");
+        collectionReservations = database.collection("reservations");
+        collectionRents = database.collection("rents");
+        collectionUsers = database.collection("users");
 
-const db = require("./database/mongoose");
-const dbName = "fluenceerp";
-const collectionName = "clients";
-
-db.initialize(dbName, collectionName, function(dbCollection) { // successCallback
-    // get all items
-    dbCollection.find().toArray(function(err, result) {
-        if (err) throw err;
-          console.log(result);
+        console.log("Connected to `" + DATABASE_NAME + "`!");
     });
-
-    // << db CRUD routes >>
-
-}, function(err) { // failureCallback
-    throw (err);
 });
 
-/**       STOP        */
+//////////////////////////////////////////////////////////
+/************************* API *************************/
+//////////////////////////////////////////////////////////
+
+/*/ AUTH //
+
 const jwt = require('jsonwebtoken');
-app.use(bodyParser.json());
-app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", "GET, POST, HEAD, OPTIONS, PUT, PATCH, DELETE");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, fluence-access-token, fluence-refresh-token, _id");
-    res.header('Content-Type', 'text/html');
-
-    res.header(
-        'Access-Control-Expose-Headers',
-        'fluence-access-token, fluence-refresh-token'
-    );
-
-    next();
-});
 
 let authenticate = (req, res, next) => {
     let token = req.header('fluence-access-token');
@@ -155,17 +152,19 @@ app.get('/users/me/access-token', verifySession, (req, res) => {
     });
 })
 
-// ORDERS:
+*/
+//ORDERS:
 
-app.get('/orders', authenticate, (req, res) => {
-    Order.find().then(orders => {
-        res.send(orders);
-    }).catch(e => {
-        res.send(e);
+app.get('/orders', /*authenticate,*/(req, res) => {
+    collectionOrders.find({}).toArray((error, result) => {
+        if (error) {
+            return res.status(500).send(error);
+        }
+        res.send(result);
     });
 })
 
-app.post('/orders', authenticate, (req, res) => {
+app.post('/orders', /*authenticate,*/(req, res) => {
     let newOrder = new Order({
         name: req.body.name,
         productId: req.body.productId,
@@ -177,24 +176,26 @@ app.post('/orders', authenticate, (req, res) => {
         comment: req.body.comment
     });
 
-    newOrder.save().then((order) => {
-        res.send(order);
-    }).catch((e) => {
-        res.status(400).send(e);
-    })
-});
-
-app.get('/orders/:id', authenticate, (req, res) => {
-    Order.findOne({
-        _id: req.params.id
-    }).then((order) => {
-        res.send(order);
-    }).catch(e => {
-        res.status(400).send(e);
+    collectionOrders.insertOne(newOrder, (error, res) => {
+        if (error) throw error;
+        collectionOrders.find().toArray((_error, _res) => {
+            if (_error) throw _error;
+            res.json(_res);
+        });
     });
 });
 
-app.patch('/orders/:id', authenticate, (req, res) => {
+app.get('/orders/:id', /*authenticate,*/(req, res) => {
+    const itemId = req.params.id;
+
+    collectionOrders.findOne({ id: itemId }, (error, result) => {
+        if (error) throw error;
+        // return item
+        res.json(result);
+    });
+});
+
+app.patch('/orders/:id', /*authenticate,*/(req, res) => {
     Order.findOneAndUpdate({ _id: req.params.id }, {
         $set: req.body
     }).then(() => {
@@ -202,25 +203,32 @@ app.patch('/orders/:id', authenticate, (req, res) => {
     });
 });
 
-app.delete('/orders/:id', authenticate, (req, res) => {
-    Order.findOneAndRemove({
-        _id: req.params.id
-    }).then(() => {
-        res.send({ 'message': 'Deleted succesfully' });
-    })
+app.delete('/orders/:id', /*authenticate,*/(req, res) => {
+    const _id = req.params.id;
+
+    collectionOrders.deleteOne({ "_id": ObjectId(_id) }, function (error, result) {
+        if (error) throw error;
+        // send back entire updated list after successful request
+        collectionOrders.find().toArray(function (_error, _result) {
+            if (_error) throw _error;
+            res.json(_result);
+        });
+    });
+
 });
 
 // PRODUCTS:
 
-app.get('/products', authenticate, (req, res) => {
-    Product.find().then(products => {
-        res.send(products);
-    }).catch(e => {
-        res.send(e);
+app.get('/products', /*authenticate,*/(req, res) => {
+    collectionProducts.find({}).toArray((error, result) => {
+        if (error) {
+            return res.status(500).send(error);
+        }
+        res.send(result);
     });
 })
 
-app.post('/products', authenticate, (req, res) => {
+app.post('/products', /*authenticate,*/(req, res) => {
     let newProduct = new Product({
         name: req.body.name,
         category: req.body.category,
@@ -228,22 +236,25 @@ app.post('/products', authenticate, (req, res) => {
         available: req.body.available
     });
 
-    newProduct.save().then((product) => {
-        res.send(product);
+    collectionProducts.insertOne(newProduct, (error, result) => { // callback of insertOne
+        collectionProducts.find({}).toArray((_error, _result) => { // callback of find
+            if (_error) throw _error;
+            res.send(_result);
+        });
     });
 });
 
-app.get('/products/:id', authenticate, (req, res) => {
-    Product.findOne({
-        _id: req.params.id
-    }).then((product) => {
-        res.send(product);
-    }).catch(e => {
-        res.status(400).send(e);
+app.get('/products/:id', /*authenticate,*/(req, res) => {
+    const itemId = req.params.id;
+
+    collectionProducts.findOne({ id: itemId }, (error, result) => {
+        if (error) throw error;
+        // return item
+        res.json(result);
     });
 });
 
-app.patch('/products/:id', authenticate, (req, res) => {
+app.patch('/products/:id', /*authenticate,*/(req, res) => {
     Product.findOneAndUpdate({ _id: req.params.id }, {
         $set: req.body
     }).then(() => {
@@ -251,47 +262,46 @@ app.patch('/products/:id', authenticate, (req, res) => {
     });
 });
 
-app.delete('/products/:id', authenticate, (req, res) => {
-    Product.findOneAndRemove({
-        _id: req.params.id
-    }).then(() => {
-        res.send({ 'message': 'Deleted succesfully' });
-    })
+app.delete('/products/:id', /*authenticate,*/(req, res) => {
+    const _id = req.params.id;
+
+    collectionProducts.deleteOne({ "_id": ObjectId(_id) }, function (error, result) {
+        if (error) throw error;
+        // send back entire updated list after successful request
+        collectionProducts.find().toArray(function (_error, _result) {
+            if (_error) throw _error;
+            res.json(_result);
+        });
+    });
 });
-
-
-
 
 // CLIENTS:
 
-app.get('/clients', authenticate, (req, res) => {
-    Client.find().then(clients => {
-       res.json(clients);
-    }).catch(e => {
-        res.send(e);
-    });
-})
-app.get("/clients", (request, response) => {
-    // return updated list
-    dbCollection.find().toArray((error, result) => {
-        if (error) throw error;
-        response.json(result);
+app.get("/clients", (req, res) => {
+    collectionClients.find({}).toArray((error, result) => {
+        if (error) {
+            return res.status(500).send(error);
+        }
+        res.send(result);
     });
 });
 
-app.post('/clients', authenticate, (req, res) => {
+app.post('/clients', /*authenticate,*/(req, res) => {
     let newClient = new Client({
         name: req.body.name,
         address: req.body.address,
         tax: req.body.tax
     });
 
-    newClient.save().then((client) => {
-        res.send(client);
+    collectionClients.insertOne(newClient, (error, result) => { // callback of insertOne
+        collectionClients.find({}).toArray((_error, _result) => { // callback of find
+            if (_error) throw _error;
+            res.send(_result);
+        });
     });
 });
 
-app.patch('/clients/:id', authenticate, (req, res) => {
+app.patch('/clients/:id', /*authenticate,*/(req, res) => {
     Client.findOneAndUpdate({ _id: req.params.id }, {
         $set: req.body
     }).then(() => {
@@ -299,27 +309,31 @@ app.patch('/clients/:id', authenticate, (req, res) => {
     });
 });
 
-app.delete('/clients/:id', authenticate, (req, res) => {
-    // We want to delete the specified list (document with id in the URL)
-    Client.findOneAndRemove({
-        _id: req.params.id
-    }).then(() => {
-        res.send({ 'message': 'Deleted succesfully' });
-    })
+app.delete('/clients/:id', /*authenticate,*/(req, res) => {
+    const _id = req.params.id;
+
+    collectionClients.deleteOne({ "_id": ObjectId(_id) }, function (error, result) {
+        if (error) throw error;
+        // send back entire updated list after successful request
+        collectionProducts.find().toArray(function (_error, _result) {
+            if (_error) throw _error;
+            res.json(_result);
+        });
+    });
 });
 
 // RESERVATION:
 
-app.get('/reservations', authenticate, (req, res) => {
-    // We want to return an array of all the lists that belong to the authenticated user 
-    Reservation.find().then(reservations => {
-        res.send(reservations);
-    }).catch(e => {
-        res.send(e);
+app.get('/reservations', /*authenticate,*/(req, res) => {
+    collectionReservations.find({}).toArray((error, result) => {
+        if (error) {
+            return res.status(500).send(error);
+        }
+        res.send(result);
     });
 })
 
-app.post('/reservations', authenticate, (req, res) => {
+app.post('/reservations', /*authenticate,*/(req, res) => {
     let newReservation = new Reservation({
         client: req.body.client,
         items: req.body.items,
@@ -327,12 +341,17 @@ app.post('/reservations', authenticate, (req, res) => {
         dateEnd: req.body.dateEnd
     });
 
-    newReservation.save().then((reservation) => {
-        res.send(reservation);
+    collectionReservations.insertOne(newReservation, (error, result) => { // callback of insertOne
+        if (error) throw error;
+        // return updated list
+        collectionReservations.find().toArray((_error, _result) => { // callback of find
+            if (_error) throw _error;
+            res.json(_result);
+        });
     });
 });
 
-app.patch('/reservations/:id', authenticate, (req, res) => {
+app.patch('/reservations/:id', /*authenticate,*/(req, res) => {
     Reservation.findOneAndUpdate({ _id: req.params.id }, {
         $set: req.body
     }).then(() => {
@@ -340,22 +359,27 @@ app.patch('/reservations/:id', authenticate, (req, res) => {
     });
 });
 
-app.delete('/reservations/:id', authenticate, (req, res) => {
-    // We want to delete the specified list (document with id in the URL)
-    Reservation.findOneAndRemove({
-        _id: req.params.id
-    }).then(() => {
-        res.send({ 'message': 'Deleted succesfully' });
-    })
+app.delete('/reservations/:id', /*authenticate,*/(req, res) => {
+    const _id = req.params.id;
+
+    collectionReservations.deleteOne({ "_id": ObjectId(_id) }, function (error, result) {
+        if (error) throw error;
+        // send back entire updated list after successful request
+        collectionReservations.find().toArray(function (_error, _result) {
+            if (_error) throw _error;
+            res.json(_result);
+        });
+    });
 });
 
 // RENT:
 
 app.get('/rents', (req, res) => {
-    Rent.find().then(rents => {
-        res.send(rents);
-    }).catch(e => {
-        res.send(e);
+    collectionRents.find({}).toArray((error, result) => {
+        if (error) {
+            return res.status(500).send(error);
+        }
+        res.send(result);
     });
 })
 
@@ -367,12 +391,17 @@ app.post('/rents', (req, res) => {
         dateEnd: req.body.dateEnd
     });
 
-    newRent.save().then((rent) => {
-        res.send(rent);
+    collectionRents.insertOne(newRent, (error, result) => { // callback of insertOne
+        if (error) throw error;
+        // return updated list
+        collectionRents.find().toArray((_error, _result) => { // callback of find
+            if (_error) throw _error;
+            res.json(_result);
+        });
     });
 });
 
-app.patch('/rents/:id', authenticate, (req, res) => {
+app.patch('/rents/:id', /*authenticate,*/(req, res) => {
     Rent.findOneAndUpdate({ _id: req.params.id }, {
         $set: req.body
     }).then(() => {
@@ -380,10 +409,22 @@ app.patch('/rents/:id', authenticate, (req, res) => {
     });
 });
 
-app.delete('/rents/:id', authenticate, (req, res) => {
-    Rent.findOneAndRemove({
-        _id: req.params.id
-    }).then(() => {
-        res.send({ 'message': 'Deleted succesfully' });
-    })
+app.delete('/rents/:id', /*authenticate,*/(req, res) => {
+    const _id = req.params.id;
+
+    collectionRents.deleteOne({ "_id": ObjectId(_id) }, function (error, result) {
+        if (error) throw error;
+        // send back entire updated list after successful request
+        collectionRents.find().toArray(function (_error, _result) {
+            if (_error) throw _error;
+            res.json(_result);
+        });
+    });
+});
+
+////////////////////*////////////////////////////////////////
+
+app.use(express.static(__dirname + '/dist/fluence-erp'));
+app.get('/*', function (req, res) {
+    res.sendFile(path.join(__dirname + '/dist/fluence-erp/index.html'));
 });

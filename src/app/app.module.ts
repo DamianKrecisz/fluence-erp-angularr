@@ -33,7 +33,7 @@ import { ProductsComponent } from './products/products.component';
 import { ProductFormComponent } from './products/product-form/product-form.component';
 import { EditProductComponent } from './products/edit-product/edit-product.component';
 import { OrderReadonlyComponent } from './orders/order-readonly/order-readonly.component';
-import { ChartsModule } from 'ng2-charts';
+import { ChartsModule, ThemeService } from 'ng2-charts';
 import { ClientsComponent } from './clients/clients.component';
 import { ClientState } from './states/client.state';
 import { ReservationState } from './states/reservation.state';
@@ -87,7 +87,8 @@ registerLocaleData(en);
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US },
-    { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptor, multi: true },
+    ThemeService
   ],
   bootstrap: [AppComponent]
 })

@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { Product } from 'src/app/models/product.model';
 import { GetProducts } from 'src/app/actions/product.actions';
 import { AuthService } from 'src/app/auth.service';
+import { filter, tap, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-order-form',
@@ -20,11 +21,19 @@ export class OrderFormComponent implements OnInit {
   @Output() orderChange: EventEmitter<Order> = new EventEmitter();
 
   public prod = null;
+  public products = [];
 
   constructor(private store: Store) { }
 
   ngOnInit() {
     this.store.dispatch(new GetProducts());
+    this.products$.subscribe((products) => {
+      this.products = products;
+    });
+  }
+
+  availableProducts() {
+    return this.products ? this.products.filter(p => p.available === true) : [];
   }
 
   emitOrder() {

@@ -3,7 +3,7 @@
 
   <div>
     <nz-select [(ngModel)]="order.productId" nzShowSearch nzPlaceHolder="Choose product" class="product-select">
-      <nz-option *ngFor="let product of products$ | async" [nzValue]="product._id" [nzLabel]="product.name" nzCustomContent>
+      <nz-option *ngFor="let product of availableProducts()" [nzValue]="product._id" [nzLabel]="product.name" nzCustomContent>
         <div class="product-option-content">
           <span>{{ product.name }}</span>
           <span nz-popover nzType="primary" [nzPopoverTitle]="product.name" [nzPopoverContent]="productDetails">
@@ -21,7 +21,7 @@
           <div class="product-detail">{{ product.price }}</div>
 
           <label class="product-detail-label">available:</label>
-          <div class="product-detail">{{ product.price }}</div>
+          <div class="product-detail">{{ product.available }}</div>
         </ng-template>
       </nz-option>
     </nz-select>

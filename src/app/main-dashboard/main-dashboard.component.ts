@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Order } from '../models/order.model';
 import { Store, Select } from '@ngxs/store';
 import { AddNewOrder, GetOrders } from '../actions/order.actions';
 import { AuthService } from '../auth.service';
 import { Observable } from 'rxjs';
 import { OrderState } from '../states/order.state';
+import { RentState } from '../states/rent.state';
 
 @Component({
   selector: 'app-main-dashboard',
@@ -15,6 +15,7 @@ import { OrderState } from '../states/order.state';
 export class MainDashboardComponent implements OnInit {
 
   @Select(OrderState.getOrders) orders$: Observable<Order[]>;
+  @Select(RentState.getRents) rents$: Observable<Order[]>;
 
   public monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'];
@@ -22,7 +23,7 @@ export class MainDashboardComponent implements OnInit {
   public isOrderModalVisible = false;
   public barChartOptions = {
     scaleShowVerticalLines: false,
-    responsive: true
+    responsive: false
   };
   public barChartLabels: Array<string>;
   public barChartType = 'bar';
@@ -46,6 +47,8 @@ export class MainDashboardComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(new GetOrders());
     this.orders$.subscribe((orders) => {
+      console.log("orders");
+      console.log(orders);
       if (orders) {
         const today = new Date();
         const lastSixMonthArray = [];
@@ -101,6 +104,15 @@ export class MainDashboardComponent implements OnInit {
 
       }
     });
+  
+    this.rents$.subscribe((rents)=>{
+      console.log("rents");
+      console.log(rents);
+      if(rents){
+
+      }
+    })
+  
   }
 
   openCreateOrderModal() {
