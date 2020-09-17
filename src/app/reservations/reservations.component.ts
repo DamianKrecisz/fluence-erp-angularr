@@ -87,6 +87,7 @@ export class ReservationsComponent implements OnInit {
     for (let [key, value] of Object.entries(this.validateForm.value)) {
       if (key.includes("itemToReserve")) {
         this.a.push(value)
+        console.log(value);
       }
     }
 
@@ -106,11 +107,10 @@ export class ReservationsComponent implements OnInit {
       this.isVisible = false;
       this.isOkLoading = false;
     }, 500);
+
   }
 
   addNewReservation(model) {
-
-    console.log(model);
     this.store.dispatch(new AddNewReservation(model));
   }
   removeField(i: { id: number; itemToReservation: string }, e: MouseEvent): void {

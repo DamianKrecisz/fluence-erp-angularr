@@ -25,7 +25,6 @@ var database,
     collectionOrders,
     collectionReservations,
     collectionRents,
-    collectionUsers;
 
 app.listen(4200, () => {
     MongoClient.connect(CONNECTION_URL, { useNewUrlParser: true }, (error, client) => {
@@ -39,7 +38,6 @@ app.listen(4200, () => {
         collectionOrders = database.collection("orders");
         collectionReservations = database.collection("reservations");
         collectionRents = database.collection("rents");
-        collectionUsers = database.collection("users");
 
         console.log("Connected to `" + DATABASE_NAME + "`!");
     });
