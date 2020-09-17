@@ -26,7 +26,7 @@ var database,
     collectionReservations,
     collectionRents
 
-app.listen(4200, () => {
+app.listen(process.env.PORT || 4200, () => {
     MongoClient.connect(CONNECTION_URL, { useNewUrlParser: true }, (error, client) => {
         if (error) {
             throw error;
