@@ -12,6 +12,7 @@ import { ProductState } from '../states/product.state';
 import { Product } from '../models/product.model';
 import { GetClients } from '../actions/client.actions';
 import { GetProducts } from '../actions/product.actions';
+import { EditProduct } from '../actions/product.actions';
 
 @Component({
   selector: 'app-reservations',
@@ -55,6 +56,7 @@ export class ReservationsComponent implements OnInit {
     this.addField();
     this.store.dispatch(new GetClients());
     this.store.dispatch(new GetProducts());
+
     //this.listOfData = data;
     //this.updateEditCache();
   }
@@ -83,11 +85,10 @@ export class ReservationsComponent implements OnInit {
   }
 
   submitForm(): void {
-
+    console.log(this.validateForm);
     for (let [key, value] of Object.entries(this.validateForm.value)) {
       if (key.includes("itemToReserve")) {
-        this.a.push(value)
-        console.log(value);
+        this.a.push(value);
       }
     }
 
@@ -102,6 +103,9 @@ export class ReservationsComponent implements OnInit {
       this.validateForm.controls[i].updateValueAndValidity();
     }
     this.addNewReservation(model);
+
+    //this.store.dispatch(new EditProduct());
+
     this.isOkLoading = true;
     setTimeout(() => {
       this.isVisible = false;
